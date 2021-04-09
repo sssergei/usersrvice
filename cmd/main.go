@@ -5,11 +5,13 @@ import (
 	"net/http"
 	"strings"
 
+	"usersrvice/internal/server"
+
+	"usersrvice/proto/reminder/v1"
+
 	log "github.com/sirupsen/logrus"
 
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
-	"github.com/sssergei/userservice/internal/server"
-	"github.com/sssergei/userservice/proto/reminder/v1"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 )

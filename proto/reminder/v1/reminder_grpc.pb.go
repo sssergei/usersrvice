@@ -43,7 +43,7 @@ func (c *reminderServiceClient) ScheduleReminder(ctx context.Context, in *Schedu
 // for forward compatibility
 type ReminderServiceServer interface {
 	ScheduleReminder(context.Context, *ScheduleReminderRequest) (*ScheduleReminderResponse, error)
-	mustEmbedUnimplementedReminderServiceServer()
+	//mustEmbedUnimplementedReminderServiceServer()
 }
 
 // UnimplementedReminderServiceServer must be embedded to have forward compatible implementations.
