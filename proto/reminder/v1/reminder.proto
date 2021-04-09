@@ -5,7 +5,7 @@ package demo.reminder.v1;
 import "google/protobuf/timestamp.proto";
 import "google/api/annotations.proto";
 
-option go_package = "reminder";
+option go_package = "/reminder";
 
 service ReminderService {
     rpc ScheduleReminder(ScheduleReminderRequest) returns (ScheduleReminderResponse) {
