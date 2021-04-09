@@ -14,86 +14,86 @@ import (
 // Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
-// ReminderServiceClient is the client API for ReminderService service.
+// UserServiceClient is the client API for UserService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type ReminderServiceClient interface {
+type UserServiceClient interface {
 	ScheduleReminder(ctx context.Context, in *ScheduleReminderRequest, opts ...grpc.CallOption) (*ScheduleReminderResponse, error)
 }
 
-type reminderServiceClient struct {
+type userServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewReminderServiceClient(cc grpc.ClientConnInterface) ReminderServiceClient {
-	return &reminderServiceClient{cc}
+func NewUserServiceClient(cc grpc.ClientConnInterface) UserServiceClient {
+	return &userServiceClient{cc}
 }
 
-func (c *reminderServiceClient) ScheduleReminder(ctx context.Context, in *ScheduleReminderRequest, opts ...grpc.CallOption) (*ScheduleReminderResponse, error) {
+func (c *userServiceClient) ScheduleReminder(ctx context.Context, in *ScheduleReminderRequest, opts ...grpc.CallOption) (*ScheduleReminderResponse, error) {
 	out := new(ScheduleReminderResponse)
-	err := c.cc.Invoke(ctx, "/demo.reminder.v1.ReminderService/ScheduleReminder", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/demo.reminder.v1.UserService/ScheduleReminder", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// ReminderServiceServer is the server API for ReminderService service.
-// All implementations must embed UnimplementedReminderServiceServer
+// UserServiceServer is the server API for UserService service.
+// All implementations must embed UnimplementedUserServiceServer
 // for forward compatibility
-type ReminderServiceServer interface {
+type UserServiceServer interface {
 	ScheduleReminder(context.Context, *ScheduleReminderRequest) (*ScheduleReminderResponse, error)
-	//mustEmbedUnimplementedReminderServiceServer()
+	//mustEmbedUnimplementedUserServiceServer()
 }
 
-// UnimplementedReminderServiceServer must be embedded to have forward compatible implementations.
-type UnimplementedReminderServiceServer struct {
+// UnimplementedUserServiceServer must be embedded to have forward compatible implementations.
+type UnimplementedUserServiceServer struct {
 }
 
-func (UnimplementedReminderServiceServer) ScheduleReminder(context.Context, *ScheduleReminderRequest) (*ScheduleReminderResponse, error) {
+func (UnimplementedUserServiceServer) ScheduleReminder(context.Context, *ScheduleReminderRequest) (*ScheduleReminderResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ScheduleReminder not implemented")
 }
-func (UnimplementedReminderServiceServer) mustEmbedUnimplementedReminderServiceServer() {}
+func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
 
-// UnsafeReminderServiceServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to ReminderServiceServer will
+// UnsafeUserServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to UserServiceServer will
 // result in compilation errors.
-type UnsafeReminderServiceServer interface {
-	mustEmbedUnimplementedReminderServiceServer()
+type UnsafeUserServiceServer interface {
+	mustEmbedUnimplementedUserServiceServer()
 }
 
-func RegisterReminderServiceServer(s grpc.ServiceRegistrar, srv ReminderServiceServer) {
-	s.RegisterService(&ReminderService_ServiceDesc, srv)
+func RegisterUserServiceServer(s grpc.ServiceRegistrar, srv UserServiceServer) {
+	s.RegisterService(&UserService_ServiceDesc, srv)
 }
 
-func _ReminderService_ScheduleReminder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _UserService_ScheduleReminder_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ScheduleReminderRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ReminderServiceServer).ScheduleReminder(ctx, in)
+		return srv.(UserServiceServer).ScheduleReminder(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/demo.reminder.v1.ReminderService/ScheduleReminder",
+		FullMethod: "/demo.reminder.v1.UserService/ScheduleReminder",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ReminderServiceServer).ScheduleReminder(ctx, req.(*ScheduleReminderRequest))
+		return srv.(UserServiceServer).ScheduleReminder(ctx, req.(*ScheduleReminderRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// ReminderService_ServiceDesc is the grpc.ServiceDesc for ReminderService service.
+// UserService_ServiceDesc is the grpc.ServiceDesc for UserService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var ReminderService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "demo.reminder.v1.ReminderService",
-	HandlerType: (*ReminderServiceServer)(nil),
+var UserService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "demo.reminder.v1.UserService",
+	HandlerType: (*UserServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "ScheduleReminder",
-			Handler:    _ReminderService_ScheduleReminder_Handler,
+			Handler:    _UserService_ScheduleReminder_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

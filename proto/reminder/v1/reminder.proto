@@ -7,7 +7,7 @@ import "google/api/annotations.proto";
 
 option go_package = "/reminder";
 
-service ReminderService {
+service UserService {
     rpc ScheduleReminder(ScheduleReminderRequest) returns (ScheduleReminderResponse) {
         option (google.api.http) = { put: "/v1/reminder/schedule" body: "*" };
     }

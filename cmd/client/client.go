@@ -4,7 +4,8 @@ import (
 	"context"
 	"time"
 
-	"github.com/arkadyb/blog/blog1/proto/reminder/v1"
+	"usersrvice/proto/reminder/v1"
+
 	"github.com/golang/protobuf/ptypes"
 	log "github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
@@ -29,7 +30,7 @@ func main() {
 		log.Fatalln("Failed to dial server: ", err)
 	}
 
-	reminderClient := reminder.NewReminderServiceClient(reminderConn)
+	reminderClient := reminder.NewUserServiceClient(reminderConn)
 	fiveSeconds, _ := ptypes.TimestampProto(time.Now().Add(5 * time.Second))
 	resp, err := reminderClient.ScheduleReminder(ctx,
 		&reminder.ScheduleReminderRequest{

@@ -22,7 +22,7 @@ func main() {
 		log.Fatalln("failed to create cert", err)
 	}
 	grpcServer := grpc.NewServer(grpc.Creds(serverCert))
-	reminder.RegisterReminderServiceServer(grpcServer, new(server.MyServer))
+	reminder.RegisterUserServiceServer(grpcServer, new(server.MyServer))
 
 	clientCert, err := credentials.NewClientTLSFromFile("../server.crt", "")
 	if err != nil {
@@ -38,7 +38,7 @@ func main() {
 	}
 
 	router := runtime.NewServeMux()
-	if err = reminder.RegisterReminderServiceHandler(context.Background(), router, conn); err != nil {
+	if err = reminder.RegisterUserServiceHandler(context.Background(), router, conn); err != nil {
 		log.Fatalln("Failed to register gateway:", err)
 	}
 
