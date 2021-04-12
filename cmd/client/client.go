@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"usersrvice/proto/reminder/v1"
+	"usersrvice/proto/user/v1"
 
 	"github.com/golang/protobuf/ptypes"
 	log "github.com/sirupsen/logrus"
@@ -30,14 +30,14 @@ func main() {
 		log.Fatalln("Failed to dial server: ", err)
 	}
 
-	reminderClient := reminder.NewUserServiceClient(reminderConn)
+	reminderClient := user.NewUserServiceClient(reminderConn)
 	fiveSeconds, _ := ptypes.TimestampProto(time.Now().Add(5 * time.Second))
 	resp, err := reminderClient.ScheduleReminder(ctx,
-		&reminder.ScheduleReminderRequest{
+		&user.ScheduleReminderRequest{
 			When: fiveSeconds,
 		})
 	if err != nil {
-		log.Fatalln("Failed to schedule a reminder: ", err)
+		log.Fatalln("Failed to schedule a user: ", err)
 	}
-	log.Infof("Reminder have been successfully scheduled. New  reminder id is %s", resp.GetId())
+	log.Infof("User have been successfully scheduled. New  user id is %s", resp.GetId())
 }

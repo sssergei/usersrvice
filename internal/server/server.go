@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"usersrvice/proto/reminder/v1"
+	"usersrvice/proto/user/v1"
 
 	"github.com/golang/protobuf/ptypes"
 	"github.com/google/uuid"
@@ -16,7 +16,7 @@ import (
 type MyServer struct {
 }
 
-func (s *MyServer) ScheduleReminder(ctx context.Context, req *reminder.ScheduleReminderRequest) (*reminder.ScheduleReminderResponse, error) {
+func (s *MyServer) ScheduleReminder(ctx context.Context, req *user.ScheduleReminderRequest) (*user.ScheduleReminderResponse, error) {
 	if req.When == nil {
 		return nil, status.Error(codes.InvalidArgument, "when cant be nil")
 	}
@@ -37,7 +37,7 @@ func (s *MyServer) ScheduleReminder(ctx context.Context, req *reminder.ScheduleR
 		log.Infof("Timer %s time!", newTimerID)
 	}(newTimerID, when.Sub(time.Now()))
 
-	return &reminder.ScheduleReminderResponse{
+	return &user.ScheduleReminderResponse{
 		Id: newTimerID,
 	}, nil
 }

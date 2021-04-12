@@ -7,7 +7,7 @@ import (
 
 	"usersrvice/internal/server"
 
-	"usersrvice/proto/reminder/v1"
+	"usersrvice/proto/user/v1"
 
 	log "github.com/sirupsen/logrus"
 
@@ -22,7 +22,7 @@ func main() {
 		log.Fatalln("failed to create cert", err)
 	}
 	grpcServer := grpc.NewServer(grpc.Creds(serverCert))
-	reminder.RegisterUserServiceServer(grpcServer, new(server.MyServer))
+	user.RegisterUserServiceServer(grpcServer, new(server.MyServer))
 
 	clientCert, err := credentials.NewClientTLSFromFile("../server.crt", "")
 	if err != nil {
@@ -38,7 +38,7 @@ func main() {
 	}
 
 	router := runtime.NewServeMux()
-	if err = reminder.RegisterUserServiceHandler(context.Background(), router, conn); err != nil {
+	if err = user.RegisterUserServiceHandler(context.Background(), router, conn); err != nil {
 		log.Fatalln("Failed to register gateway:", err)
 	}
 
