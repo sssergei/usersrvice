@@ -12,11 +12,15 @@ import (
 	log "github.com/sirupsen/logrus"
 
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
+
+	_ "github.com/pdrum/swagger-automation/docs" // This line is necessary for go-swagger to find your docs!
 )
 
 func main() {
+
 	serverCert, err := credentials.NewServerTLSFromFile("../server.crt", "../server.key")
 	if err != nil {
 		log.Fatalln("failed to create cert", err)
