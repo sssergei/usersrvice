@@ -6,7 +6,6 @@ import (
 	"strings"
 
 	"usersrvice/internal/server"
-
 	"usersrvice/proto/user/v1"
 
 	log "github.com/sirupsen/logrus"

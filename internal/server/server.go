@@ -4,6 +4,11 @@ import (
 	"context"
 	"time"
 
+	"database/sql"
+	"fmt"
+
+	_ "github.com/go-sql-driver/mysql"
+
 	"usersrvice/proto/user/v1"
 
 	"github.com/golang/protobuf/ptypes"
@@ -39,5 +44,36 @@ func (s *MyServer) ScheduleReminder(ctx context.Context, req *user.ScheduleRemin
 
 	return &user.ScheduleReminderResponse{
 		Id: newTimerID,
+	}, nil
+}
+
+func (s *MyServer) GetUsers(ctx context.Context, req *user.GetUsersRequest) (*user.UsersResponse, error) {
+	fmt.Println("Go MySQL database")
+	db, err := sql.Open("mysql", "root:password@tcp(127.0.0.1:3306)/mydb")
+
+	if err != nil {
+		panic(err.Error())
+	}
+
+	defer db.Close()
+
+	rows, err := db.Query("SELECT * FROM mydb.users")
+
+	if err != nil {
+		panic(err.Error())
+	}
+	var users []*user.User
+	for rows.Next() {
+		var user user.User
+
+		if err := rows.Scan(&user.Id, &user.Name, &user.Surname, &user.Othername); err != nil {
+			log.Println(err.Error())
+		}
+
+		users = append(users, &user)
+	}
+	defer rows.Close()
+	return &user.UsersResponse{
+		User: users,
 	}, nil
 }

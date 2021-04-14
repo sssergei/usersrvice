@@ -39,5 +39,15 @@ func main() {
 	if err != nil {
 		log.Fatalln("Failed to schedule a user: ", err)
 	}
+
 	log.Infof("User have been successfully scheduled. New  user id is %s", resp.GetId())
+
+	resp1, err := reminderClient.GetUsers(ctx, &user.GetUsersRequest{})
+	if err != nil {
+		log.Fatalln("Failed to get users: ", err)
+	}
+	users := resp1.User
+	for i := 0; i < len(users); i++ {
+		log.Infof("Id: %s Name: %s Surname: %s OtherName: %s", users[i].Id, users[i].Name, users[i].Surname, users[i].Othername)
+	}
 }

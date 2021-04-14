@@ -11,6 +11,9 @@ service UserService {
     rpc ScheduleReminder(ScheduleReminderRequest) returns (ScheduleReminderResponse) {
         option (google.api.http) = { put: "/v1/user/schedule" body: "*" };
     }
+    rpc GetUsers(GetUsersRequest) returns (UsersResponse){
+        option (google.api.http) = {get: "/v1/user/users"};
+    }
 }
 
 message ScheduleReminderRequest {
@@ -19,4 +22,17 @@ message ScheduleReminderRequest {
 
 message ScheduleReminderResponse {
     string id = 1;       
+}
+
+message GetUsersRequest {}
+
+message User{
+    int64 id = 1;
+    string name = 2;
+    string surname = 3;
+    string othername = 4;
+}
+
+message UsersResponse{
+    repeated User user = 1;
 }
