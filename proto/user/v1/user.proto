@@ -17,6 +17,10 @@ service UserService {
     rpc InsertUser(InsertUserRequest) returns (InsertUserResponse){
          option (google.api.http) = { post: "/v1/user/insert" body: "*" };
     }
+    rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse){
+         option (google.api.http) = { post: "/v1/user/delete"  body: "*"};
+    }
+
 }
 
 message ScheduleReminderRequest {
@@ -47,5 +51,13 @@ message InsertUserRequest{
 }
 
 message InsertUserResponse{
+    string message = 1;
+}
+
+message DeleteUserRequest{
+    int64 id = 1;
+}
+
+message DeleteUserResponse{
     string message = 1;
 }

@@ -21,6 +21,7 @@ type UserServiceClient interface {
 	ScheduleReminder(ctx context.Context, in *ScheduleReminderRequest, opts ...grpc.CallOption) (*ScheduleReminderResponse, error)
 	GetUsers(ctx context.Context, in *GetUsersRequest, opts ...grpc.CallOption) (*UsersResponse, error)
 	InsertUser(ctx context.Context, in *InsertUserRequest, opts ...grpc.CallOption) (*InsertUserResponse, error)
+	DeleteUser(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*DeleteUserResponse, error)
 }
 
 type userServiceClient struct {
@@ -58,6 +59,15 @@ func (c *userServiceClient) InsertUser(ctx context.Context, in *InsertUserReques
 	return out, nil
 }
 
+func (c *userServiceClient) DeleteUser(ctx context.Context, in *DeleteUserRequest, opts ...grpc.CallOption) (*DeleteUserResponse, error) {
+	out := new(DeleteUserResponse)
+	err := c.cc.Invoke(ctx, "/pack.user.v1.UserService/DeleteUser", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServiceServer is the server API for UserService service.
 // All implementations must embed UnimplementedUserServiceServer
 // for forward compatibility
@@ -65,6 +75,7 @@ type UserServiceServer interface {
 	ScheduleReminder(context.Context, *ScheduleReminderRequest) (*ScheduleReminderResponse, error)
 	GetUsers(context.Context, *GetUsersRequest) (*UsersResponse, error)
 	InsertUser(context.Context, *InsertUserRequest) (*InsertUserResponse, error)
+	DeleteUser(context.Context, *DeleteUserRequest) (*DeleteUserResponse, error)
 	//mustEmbedUnimplementedUserServiceServer()
 }
 
@@ -80,6 +91,9 @@ func (UnimplementedUserServiceServer) GetUsers(context.Context, *GetUsersRequest
 }
 func (UnimplementedUserServiceServer) InsertUser(context.Context, *InsertUserRequest) (*InsertUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method InsertUser not implemented")
+}
+func (UnimplementedUserServiceServer) DeleteUser(context.Context, *DeleteUserRequest) (*DeleteUserResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteUser not implemented")
 }
 func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
 
@@ -148,6 +162,24 @@ func _UserService_InsertUser_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserService_DeleteUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteUserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).DeleteUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pack.user.v1.UserService/DeleteUser",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).DeleteUser(ctx, req.(*DeleteUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserService_ServiceDesc is the grpc.ServiceDesc for UserService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -166,6 +198,10 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "InsertUser",
 			Handler:    _UserService_InsertUser_Handler,
+		},
+		{
+			MethodName: "DeleteUser",
+			Handler:    _UserService_DeleteUser_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -107,8 +107,36 @@ func (s *MyServer) InsertUser(ctx context.Context, req *user.InsertUserRequest) 
 	}
 
 	res, err := result.LastInsertId()
-
+	if err != nil {
+		panic(err.Error())
+	}
 	return &user.InsertUserResponse{
+		Message: strconv.FormatInt(res, 10),
+	}, nil
+}
+func (s *MyServer) DeleteUser(ctx context.Context, req *user.DeleteUserRequest) (*user.DeleteUserResponse, error) {
+	fmt.Println("Go MySQL database")
+	if req.Id == 0 {
+		return nil, status.Error(codes.InvalidArgument, "Id cant be 0")
+	}
+	db, err := sql.Open("mysql", "root:password@tcp(127.0.0.1:3306)/mydb")
+
+	if err != nil {
+		panic(err.Error())
+	}
+
+	defer db.Close()
+
+	result, err := db.Exec("delete from mydb.users where id =" + strconv.FormatInt(req.GetId(), 10) + ";")
+
+	if err != nil {
+		panic(err.Error())
+	}
+	res, err := result.RowsAffected()
+	if err != nil {
+		panic(err.Error())
+	}
+	return &user.DeleteUserResponse{
 		Message: strconv.FormatInt(res, 10),
 	}, nil
 }

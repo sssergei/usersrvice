@@ -60,4 +60,12 @@ func main() {
 		log.Fatalln("Failed to insert user ", err)
 	}
 	log.Infof("User was inserted %s", resp2.GetMessage())
+
+	resp3, err := reminderClient.DeleteUser(ctx, &user.DeleteUserRequest{
+		Id: 15,
+	})
+	if err != nil {
+		log.Fatalln("Failed to delete user ", err)
+	}
+	log.Infof("User was deleted %s", resp3.GetMessage())
 }
