@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"strconv"
 	"time"
 
 	"database/sql"
@@ -75,5 +76,39 @@ func (s *MyServer) GetUsers(ctx context.Context, req *user.GetUsersRequest) (*us
 	defer rows.Close()
 	return &user.UsersResponse{
 		User: users,
+	}, nil
+}
+func (s *MyServer) InsertUser(ctx context.Context, req *user.InsertUserRequest) (*user.InsertUserResponse, error) {
+	fmt.Println("Go MySQL database")
+	if len(req.Name) == 0 {
+		return nil, status.Error(codes.InvalidArgument, "name cant be nil")
+	}
+	if len(req.Surname) == 0 {
+		return nil, status.Error(codes.InvalidArgument, "Surname cant be nil")
+	}
+
+	db, err := sql.Open("mysql", "root:password@tcp(127.0.0.1:3306)/mydb")
+
+	if err != nil {
+		panic(err.Error())
+	}
+
+	defer db.Close()
+
+	result, err := db.Exec("insert into mydb.users(name,surname,othername) values('" + req.GetName() + "','" + req.GetSurname() + "', '" + req.GetOthername() + "');")
+
+	if err != nil {
+		panic(err.Error())
+	}
+	if result == nil {
+		return &user.InsertUserResponse{
+			Message: "The user was inserted",
+		}, nil
+	}
+
+	res, err := result.LastInsertId()
+
+	return &user.InsertUserResponse{
+		Message: strconv.FormatInt(res, 10),
 	}, nil
 }

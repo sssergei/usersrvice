@@ -14,6 +14,9 @@ service UserService {
     rpc GetUsers(GetUsersRequest) returns (UsersResponse){
         option (google.api.http) = {get: "/v1/user/users"};
     }
+    rpc InsertUser(InsertUserRequest) returns (InsertUserResponse){
+         option (google.api.http) = { post: "/v1/user/insert" body: "*" };
+    }
 }
 
 message ScheduleReminderRequest {
@@ -35,4 +38,14 @@ message User{
 
 message UsersResponse{
     repeated User user = 1;
+}
+
+message InsertUserRequest{
+    string name = 1;
+    string surname = 2;
+    string othername = 3;
+}
+
+message InsertUserResponse{
+    string message = 1;
 }

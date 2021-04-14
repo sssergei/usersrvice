@@ -50,4 +50,14 @@ func main() {
 	for i := 0; i < len(users); i++ {
 		log.Infof("Id: %s Name: %s Surname: %s OtherName: %s", users[i].Id, users[i].Name, users[i].Surname, users[i].Othername)
 	}
+
+	resp2, err := reminderClient.InsertUser(ctx, &user.InsertUserRequest{
+		Name:      "Myname",
+		Surname:   "Mysurname",
+		Othername: "Myothername",
+	})
+	if err != nil {
+		log.Fatalln("Failed to insert user ", err)
+	}
+	log.Infof("User was inserted %s", resp2.GetMessage())
 }
